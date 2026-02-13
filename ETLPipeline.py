@@ -39,12 +39,13 @@ if node_outputs:
         if df is None:
             st.error("No output (failed or empty)")
         if isinstance(df, dict):
-            keys = list(df.keys())
-            dfs = list(df.values())
-            st.write(f"**{selected} - {keys[0]}** - ")
-            st.dataframe(dfs[0].limit(10).toPandas())
-            st.write(f"**{selected} - {keys[1]}** - ")
-            st.dataframe(dfs[1].limit(10).toPandas())
+            # keys = list(df.keys())
+            # dfs = list(df.values())
+            # st.write(f"**{selected} - {keys[0]}** - ")
+            # st.dataframe(dfs[0].limit(10).toPandas())
+            # st.write(f"**{selected} - {keys[1]}** - ")
+            # st.dataframe(dfs[1].limit(10).toPandas())
+            continue
 
         else:
             st.write(f"**{selected}** — ")
