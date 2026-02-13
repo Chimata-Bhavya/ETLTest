@@ -8,8 +8,9 @@ import logging
 from typing import Union, Dict, List, Any
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql.functions import expr, col, lit, current_timestamp, when, uuid, rand
+from pyspark.sql.functions import expr, col, lit, current_timestamp, when, rand
 from pyspark.sql.types import StructType, StructField, StringType, LongType, IntegerType
+
 
 # Conditional import for Delta Table to avoid errors if library is missing in non-delta envs
 try:
@@ -311,26 +312,6 @@ class SIMPLE_EVALNode:
             return {'true': input_df, 'false': empty_df}
         else:
             return {'true': empty_df, 'false': input_df}
-
-
-class RandomValueNode:
-    def __init__(self, properties: dict = None, **kwargs):
-        self.fields = []
-        if properties and 'step' in properties:
-            f_list = properties['step'].get('fields', [])
-            if f_list:
-                for f in f_list[0].get('field', []):
-                    name = f.get('name', [None])[0]
-                    ftype = f.get('type', [None])[0]
-                    self.fields.append((name, ftype))
-
-    def run(self, spark: SparkSession, input_df: DataFrame) -> DataFrame:
-        for name, ftype in self.fields:
-            if ftype and 'uuid' in ftype.lower():
-                input_df = input_df.withColumn(name, expr("uuid()"))
-            else:
-                input_df = input_df.withColumn(name, expr("rand()"))
-        return input_df
 
 
 class SystemInfoNode:
@@ -863,6 +844,7 @@ class SIMPLE_EVALNode:
 class RandomValueNode:
     def __init__(self, properties: dict = None, **kwargs):
         self.fields = []
+
         if properties and 'step' in properties:
             f_list = properties['step'].get('fields', [])
             if f_list:
@@ -873,12 +855,17 @@ class RandomValueNode:
 
     def run(self, spark: SparkSession, input_df: DataFrame) -> DataFrame:
         for name, ftype in self.fields:
+            if not name:
+                continue  # Skip invalid field names
+
             if ftype and 'uuid' in ftype.lower():
+                # Spark SQL uuid() works in 3.3.2
                 input_df = input_df.withColumn(name, expr("uuid()"))
             else:
-                input_df = input_df.withColumn(name, expr("rand()"))
-        return input_df
+                # Use built-in rand() instead of expr("rand()")
+                input_df = input_df.withColumn(name, rand())
 
+        return input_df
 
 class SystemInfoNode:
     def __init__(self, properties: dict = None, **kwargs):
