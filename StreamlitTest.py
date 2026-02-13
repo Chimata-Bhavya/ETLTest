@@ -13,7 +13,7 @@ ROOT_JOB_NAME = "GENDER_KTR"
 # Initialize builder once
 if "builder" not in st.session_state:
     builder = ETLGraphBuilder(DATA_FOLDER)
-    builder.load_from_json(ROOT_JOB_NAME)
+    builder.load_json_file(ROOT_JOB_NAME)
     st.session_state.builder = builder
 
 builder = st.session_state.builder
