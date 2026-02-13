@@ -13,7 +13,8 @@ builder = SparkSession.builder \
 spark = SparkSession.builder.getOrCreate()
 
 import pandas as pd
-employees = pd.read_csv(r'C:\Users\Chimata.Charita\Downloads\Trial')
+
+employees = pd.read_csv(r'C:\Users\Chimata.Charita\Downloads\Trial\employees_random.csv')
 spark_df = spark.createDataFrame(employees)
 
 # register as temp view
