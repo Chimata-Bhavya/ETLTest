@@ -21,6 +21,7 @@ spark_df.createOrReplaceTempView("employees")
 
 node_outputs = {}  # node_name → DataFrame or dict
 writers = []  # list of (writer, path) tuples
+
 def run_pipeline():
     global node_outputs, writers
     node_outputs.clear()
@@ -140,6 +141,7 @@ def run_pipeline():
         node_df_TO_FEMALE_EMPLOYEES = factory.TableOutputNode(properties={'step': {'name': ['OUT_female_emp'], 'type': ['TableOutput'], 'connection': ['company_db'], 'schema': [None], 'table': ['female_employees'], 'truncate': ['Y']}})
         writer_df_TO_FEMALE_EMPLOYEES = node_df_TO_FEMALE_EMPLOYEES.run(spark, input_df)
         writers.append((writer_df_TO_FEMALE_EMPLOYEES, '/delta/TO_FEMALE_EMPLOYEES'))
+        node_outputs['TO_FEMALE_EMPLOYEES'] = writer_df_TO_FEMALE_EMPLOYEES
     except Exception as e:
         print(f'Failed: TO_FEMALE_EMPLOYEES - {e}')
         node_outputs['TO_FEMALE_EMPLOYEES'] = None
@@ -158,6 +160,7 @@ def run_pipeline():
         node_df_TO_MALE_EMPLOYEES = factory.TableOutputNode(properties={'step': {'name': ['OUT_male_emp'], 'type': ['TableOutput'], 'connection': ['company_db'], 'schema': [None], 'table': ['male_employees'], 'truncate': ['Y']}})
         writer_df_TO_MALE_EMPLOYEES = node_df_TO_MALE_EMPLOYEES.run(spark, input_df)
         writers.append((writer_df_TO_MALE_EMPLOYEES, '/delta/TO_MALE_EMPLOYEES'))
+        node_outputs['TO_MALE_EMPLOYEES'] = writer_df_TO_MALE_EMPLOYEES
     except Exception as e:
         print(f'Failed: TO_MALE_EMPLOYEES - {e}')
         node_outputs['TO_MALE_EMPLOYEES'] = None
