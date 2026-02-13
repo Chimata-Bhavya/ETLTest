@@ -120,7 +120,7 @@ def run_pipeline():
             input_df = parent_output
         node_df_CHECK_GENDER = factory.FilterRowsNode(properties={'step': {'name': ['Check_Female_Employees'], 'type': ['FilterRows'], 'description': None, 'partitioning': [{'method': ['none'], 'schema_name': [None]}], 'send_true_to': ['TO_FEMALE_EMPLOYEES'], 'send_false_to': ['TO_MALE_EMPLOYEES'], 'compare': {'condition': [{'negated': ['N'], 'leftvalue': ['gender'], 'function': ['='], 'rightvalue': ['Female']}]}, 'attributes': [None], 'cluster_schema': [None], 'remotesteps': [{'input': [None], 'output': [None]}], 'GUI': [{'xloc': ['240'], 'yloc': ['272'], 'draw': ['Y']}]}}, send_true_to=['TO_FEMALE_EMPLOYEES'], send_false_to=['TO_MALE_EMPLOYEES'], condition=[{'negated': ['N'], 'leftvalue': ['gender'], 'function': ['='], 'rightvalue': ['Female']}])
         df_CHECK_GENDER = node_df_CHECK_GENDER.run(spark, input_df)
-        df_CHECK_GENDER.cache()
+        # df_CHECK_GENDER.cache()
         node_outputs['CHECK_GENDER'] = df_CHECK_GENDER
     except Exception as e:
         print(f'Failed: CHECK_GENDER - {e}')
