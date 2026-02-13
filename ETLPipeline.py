@@ -113,7 +113,7 @@ def run_pipeline():
     try:
         print('Executing (lazy): CHECK_GENDER')
         # Warning: CHECK_GENDER has 2 parents → using first
-        parent_output = node_outputs.get('FILTER_BY_SALARY_AND_YOJ', None)
+        parent_output = spark_df
         if isinstance(parent_output, dict):
             input_df = parent_output.get('CHECK_GENDER', None)
         else:
