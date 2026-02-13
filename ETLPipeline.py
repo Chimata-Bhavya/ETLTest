@@ -5,8 +5,8 @@ import ETLFactoryDelta as factory
 
 builder = SparkSession.builder \
     .appName('Lazy_Delta_ETL') \
-    .config('spark.scheduler.mode', 'FAIR') \
-    .getOrCreate()
+    .config('spark.scheduler.mode', 'FAIR')
+    # .getOrCreate()
     # .config('spark.sql.extensions', 'io.delta.sql.DeltaSparkSessionExtension') \
     # .config('spark.sql.catalog.spark_catalog', 'org.apache.spark.sql.delta.catalog.DeltaCatalog')
 
