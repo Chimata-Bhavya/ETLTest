@@ -20,7 +20,7 @@ builder = st.session_state.builder
 
 # Graph display (simple JSON-based for now)
 st.subheader("Pipeline Graph")
-st.json(builder.get_graph_data())  # temporary — replace with real graph later
+st.json(builder.get_graph_data())
 
 # Run pipeline
 if st.button("Run Pipeline"):
@@ -38,6 +38,14 @@ if node_outputs:
         df = node_outputs.get(selected)
         if df is None:
             st.error("No output (failed or empty)")
+        if isinstance(df, dict):
+            keys = list(df.keys())
+            dfs = list(df.values())
+            st.write(f"**{selected} - {keys[0]}** - Total rows: {dfs[0].count()}")
+            st.dataframe(dfs[0].limit(10).toPandas())
+            st.write(f"**{selected} - {keys[1]}** - Total rows: {dfs[1].count()}")
+            st.dataframe(dfs[1].limit(10).toPandas())
+
         else:
             st.write(f"**{selected}** — Total rows: {df.count()}")
             st.dataframe(df.limit(10).toPandas())
