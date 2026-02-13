@@ -2,7 +2,7 @@
 import streamlit as st
 import json
 from ETLPipeline import run_pipeline, node_outputs
-from GraphTest import ETLGraphBuilder
+from GraphTest import ETLGraphBuilder, load_json_file
 
 st.set_page_config(page_title="ETL Pipeline UI", layout="wide")
 st.title("ETL Pipeline Explorer")
