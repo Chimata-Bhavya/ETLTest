@@ -180,6 +180,20 @@ class ETLGraphBuilder:
         net.write_html(OUTPUT_HTML)
         print(f"✅ Graph saved: {OUTPUT_HTML}")
 
+    def get_graph_data(self):
+        return {
+            "nodes": [
+                {
+                    "id": nid,
+                    "name": p["name"],
+                    "type": p["type"],
+                    "filename": p["filename"],
+                }
+                for nid, p in self.nodes.items()
+            ],
+            "edges": self.edges
+        }
+    
     def export_json(self, filename="etl_graph.json"):
         export_data = {
             "nodes": [
